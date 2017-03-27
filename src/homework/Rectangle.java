@@ -5,19 +5,16 @@ package homework;
  */
 public class Rectangle {
     public static void main(String[] args) {
-        double width=10;
-        double height=4;
-
+        double width=10.0;
+        double height=4.0;
         System.out.println("长："+width+"，宽"+height+"，周长："+L(width,height)+"，面积："+S(width,height));
     }
 
     static double S(double width, double height) {
-        double s=width*height;
-        return s;
+        return width*height;
     }
 
     static double L(double width, double height) {
-        double l=(width+height)*2;
-        return l;
+        return (width+height)*2;
     }
 }

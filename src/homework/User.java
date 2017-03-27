@@ -34,9 +34,10 @@ public class User {
     public static void main(String[] args) {
         User user = new User();
         user.setUsername("ABCD");
-        user.setKey("PASSWD");
         System.out.println(user.getUsername());
-        System.out.println(user.getKey());
+
+        user.User("ABC","Key");
+        System.out.println(user.getUsername()+" "+user.getKey());
 
     }
 }
