@@ -73,7 +73,6 @@ class SavingAccount extends Account{
         this.email=email;
         this.balance=balance;
     }
-
 }
 
 class CreditAccount extends Account{
@@ -98,7 +97,6 @@ class CreditAccount extends Account{
 class Bank {
     SavingAccount[] savingAccounts = new SavingAccount[20];
     CreditAccount[] creditAccounts = new CreditAccount[20];
-
     //创建储蓄卡账户
     void csavingAccounts(String password, String name, String personId, String email, double balance) {
         savingAccounts[totalSaving()] = new SavingAccount(totalSaving(), password, name, personId, email, balance);
@@ -113,15 +111,24 @@ class Bank {
 
     //存款
     void deposit(int pid, double money, int j) {
-        if (pid < 51)
+        if (pid < 51) {
+            if (money % 100 != 0){
+                System.out.println("金额错误");
+                afterLogin(pid);
+
+            }
             savingAccounts[pid].balance += money;
+        }
         else {
-            pid -= 51;
-            creditAccounts[pid].balance += money;
+            if(money % 100 !=0){
+                System.out.println("金额错误");
+                afterLogin2(pid);
+            }
+                pid -= 51;
+                creditAccounts[pid].balance += money;
         }
 
         System.out.println("存款成功，存入" + money + "元");
-        showInfo(pid);
         if (j == 1)
             afterLogin(pid);
         else
@@ -132,6 +139,11 @@ class Bank {
     void withdraw(int pid, double money, int j) {
 
         if (pid < 51) {
+            if(money % 100!=0)
+            {
+                System.out.println("金额错误");
+                afterLogin(pid);
+            }
             if (money < savingAccounts[pid].balance) {
                 savingAccounts[pid].balance -= money;
                 System.out.println("取款成功，取出" + money + "元");
@@ -149,6 +161,11 @@ class Bank {
             }
 
         } else {
+            if(money % 100!=0)
+            {
+                System.out.println("金额错误");
+                afterLogin2(pid);
+            }
             if (money < creditAccounts[pid].balance) {
                 creditAccounts[pid].balance -= money;
                 System.out.println("取款成功，取出" + money + "元");
@@ -221,11 +238,11 @@ class Bank {
 
     void login() {
         Scanner in = new Scanner(System.in);
-        System.out.println("请输入身份证号：");
-        String str = in.next();
+        System.out.println("请输入ID：");
+        long str = in.nextLong();
         int i;
         for (i = 0; i < totalSaving(); i++) {
-            if (savingAccounts[i].personId.equals(str)) {
+            if (savingAccounts[i].id==str) {
                 System.out.println("请输入密码：");
                 String pwd = in.next();
                 if (savingAccounts[i].password.equals(pwd))
@@ -234,7 +251,7 @@ class Bank {
             }
         }
         for (i = 0; i < totalCredit(); i++) {
-            if (creditAccounts[i].personId.equals(str)) {
+            if (creditAccounts[i].id==str) {
                 System.out.println("请输入密码：");
                 String pwd = in.next();
                 if (creditAccounts[i].password.equals(pwd))
@@ -249,20 +266,23 @@ Scanner in = new Scanner(System.in);
 
     void afterLogin(int i) {
         int j = 1;
-        System.out.print("1.存款   2.取款  3.退出系统");
+        System.out.print("1.存款   2.取款  3.查询余额   4.退出系统");
         int d = in.nextInt();
         switch (d) {
             case 1:     // 存款
-                System.out.println("输入存款金额");
+                System.out.println("输入存款金额（100的整数倍数)");
                 double money = in.nextDouble();
                 deposit(i, money, j);
                 break;
             case 2:     // 取款
-                System.out.println("输入取款金额");
+                System.out.println("输入取款金额（100的整数倍数)");
                 double money2 = in.nextDouble();
                 withdraw(i, money2, j);
                 break;
             case 3:
+                System.out.println("当前余额:"+savingAccounts[i].getBalance());
+                afterLogin(i);
+            case 4:
                 System.exit(0);
             default:
                 System.out.println("输入错误");
@@ -275,7 +295,7 @@ Scanner in = new Scanner(System.in);
         System.out.println("请输入密码：");
         String pwd = in.next();
         if(creditAccounts[i].password.equals(pwd)) {
-            System.out.println("登录成功:1.存款   2.取款  3.设置透支额度  4.退出系统");
+            System.out.println("登录成功:1.存款   2.取款    3.查询余额     4.设置透支额度  5.退出系统");
             int d = in.nextInt();
             switch (d) {
                 case 1:     // 存款
@@ -288,12 +308,16 @@ Scanner in = new Scanner(System.in);
                     double money2 = in.nextDouble();
                     withdraw(i, money2,j);
                     break;
-                case 3:     //
+                case 3:
+                    System.out.println(creditAccounts[i].getBalance());
+                    afterLogin2(i);
+                    break;
+                case 4:     //
                     System.out.println("输入透支额度");
                     double ceil = in.nextDouble();
                     setCeiling(i,ceil);
                     break;
-                case 4:
+                case 5:
                     System.exit(0);
                 default:
                     System.out.println("输入错误");
@@ -409,6 +433,7 @@ Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
         Bank bank = new Bank();
+        bank.savingAccounts[0]=new SavingAccount(001,"123","username","320102","@qq.com",101.0);
         bank.showMenu();
     }
 }
