@@ -1,3 +1,6 @@
+package IO;
+
+
 public class test {
     public static void main(String[] args) {
  /*       String s = "新年快乐！";//字符串
