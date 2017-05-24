@@ -22,6 +22,7 @@ public class ex14_2 {
 
         String sql = "INSERT into tb_stu(name,sex,birthday) VALUES (?,?,?)";
 
+
         PreparedStatement ptmt=conn.prepareStatement(sql);
 
         ptmt.setString(1, "李某");
