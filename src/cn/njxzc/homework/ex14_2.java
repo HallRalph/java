@@ -21,6 +21,7 @@ public class ex14_2 {
         conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
         String sql = "INSERT into tb_stu(name,sex,birthday) VALUES (?,?,?)";
+
         PreparedStatement ptmt=conn.prepareStatement(sql);
 
         ptmt.setString(1, "李某");
