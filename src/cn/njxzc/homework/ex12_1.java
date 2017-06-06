@@ -1,4 +1,4 @@
-package IO;
+package cn.njxzc.homework;
 
 import java.io.*;
 import java.util.Scanner;
@@ -6,9 +6,9 @@ import java.util.Scanner;
 /**
  * Created by ST001 on 2017/5/10.
  */
-public class ex1 {
+public class ex12_1 {
     public static void main(String[] args) throws IOException {
-        File f = new File("src/IO/ex1.txt");   //运行前清空存储结果的txt
+        File f = new File("./ex12_1.txt");   //运行前清空存储结果的txt
         FileWriter fw =  new FileWriter(f);
         fw.write("");
 
@@ -21,7 +21,7 @@ public class ex1 {
             BufferedWriter out = null;
             try {
                 out = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream("src/IO/ex1.txt", true)));    //追加写入
+                        new FileOutputStream("./ex12_1.txt", true)));    //追加写入
                 out.write(((int) chars[i])*3+" ");      //每个字符的ASCII码*3后写入
                 str+=((int) chars[i])*3+" ";
             } catch (Exception e) {
@@ -35,7 +35,7 @@ public class ex1 {
             }
      }
 
-        FileReader fr = new FileReader("src/IO/ex1.txt");
+        FileReader fr = new FileReader("./ex12_1.txt");
         char [] buf2=new char[1024];
         String str2="";
         int num=0;
