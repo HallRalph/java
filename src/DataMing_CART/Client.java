@@ -5,7 +5,7 @@ package DataMing_CART;
  */
 public class Client {
     public static void main(String[] args) {
-        String filePath = "D:/code/java/input.txt";
+        String filePath = "src/DataMing_CART/input.txt";
 
         CARTTool tool = new CARTTool(filePath);
 

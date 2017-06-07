@@ -1,9 +1,5 @@
-package DataMing_CART;
+package DataMining_RandomForest;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,42 +26,21 @@ public class CARTTool {
     // 每个属性的值所有类型
     private HashMap<String, ArrayList<String>> attrValue;
 
-    public CARTTool(String filePath) {
-        this.filePath = filePath;
+    public CARTTool(ArrayList<String[]> dataArray) {
         attrValue = new HashMap<>();
+        readData(dataArray);
     }
 
     /**
-     * 从文件中读取数据
+     * 根据随机选取的样本数据进行初始化
+     * @param dataArray
+     * 已经读入的样本数据
      */
-    public void readDataFile() {
-        File file = new File(filePath);
-        ArrayList<String[]> dataArray = new ArrayList<String[]>();
-
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String str;
-            String[] tempArray;
-            while ((str = in.readLine()) != null) {
-                tempArray = str.split(" ");
-                dataArray.add(tempArray);
-            }
-            in.close();
-        } catch (IOException e) {
-            e.getStackTrace();
-        }
-
+    public void readData(ArrayList<String[]> dataArray) {
         data = new String[dataArray.size()][];
         dataArray.toArray(data);
         attrNum = data[0].length;
         attrNames = data[0];
-
-        /*
-         * for (int i = 0; i < data.length; i++) { for (int j = 0; j <
-         * data[0].length; j++) { System.out.print(" " + data[i][j]); }
-         * System.out.print("\n"); }
-         */
-
     }
 
     /**
@@ -88,12 +63,6 @@ public class CARTTool {
             // 一列属性的值已经遍历完毕，复制到map属性表中
             attrValue.put(data[0][j], tempValues);
         }
-
-        /*
-         * for (Map.Entry entry : attrValue.entrySet()) {
-         * System.out.println("key:value " + entry.getKey() + ":" +
-         * entry.getValue()); }
-         */
     }
 
     /**
@@ -113,7 +82,6 @@ public class CARTTool {
                               String value, boolean beLongValue) {
         // 实例总数
         int total = 0;
-        // 正实例数
         int posNum = 0;
         // 负实例数
         int negNum = 0;
@@ -214,7 +182,7 @@ public class CARTTool {
         return str;
     }
 
-    public void buildDecisionTree(AttrNode node, String parentAttrValue,
+    public void buildDecisionTree(TreeNode node, String parentAttrValue,
                                   String[][] remainData, ArrayList<String> remainAttr,
                                   boolean beLongParentValue) {
         // 属性划分值
@@ -240,7 +208,7 @@ public class CARTTool {
                 }
                 node.setDataIndex(indexArray);
             }
-            System.out.println("attr remain null");
+            //	System.out.println("attr remain null");
             return;
         }
 
@@ -259,7 +227,7 @@ public class CARTTool {
         node.setAttrName(spiltAttrName);
 
         // 孩子节点,分类回归树中，每次二元划分，分出2个孩子节点
-        AttrNode[] childNode = new AttrNode[2];
+        TreeNode[] childNode = new TreeNode[2];
         String[][] rData;
 
         boolean[] bArray = new boolean[] { true, false };
@@ -280,7 +248,7 @@ public class CARTTool {
                 }
             }
 
-            childNode[i] = new AttrNode();
+            childNode[i] = new TreeNode();
             if (!sameClass) {
                 // 创建新的对象属性，对象的同个引用会出错
                 ArrayList<String> rAttr = new ArrayList<>();
@@ -350,8 +318,11 @@ public class CARTTool {
         return desDataArray;
     }
 
-    public void startBuildingTree() {
-        readDataFile();
+    /**
+     * 构造分类回归树，并返回根节点
+     * @return
+     */
+    public TreeNode startBuildingTree() {
         initAttrValue();
 
         ArrayList<String> remainAttr = new ArrayList<>();
@@ -360,14 +331,12 @@ public class CARTTool {
             remainAttr.add(attrNames[i]);
         }
 
-        AttrNode rootNode = new AttrNode();
+        TreeNode rootNode = new TreeNode();
         buildDecisionTree(rootNode, "", data, remainAttr, false);
         setIndexAndAlpah(rootNode, 0, false);
-        System.out.println("剪枝前：");
         showDecisionTree(rootNode, 1);
-        setIndexAndAlpah(rootNode, 0, true);
-        System.out.println("\n剪枝后：");
-        showDecisionTree(rootNode, 1);
+
+        return rootNode;
     }
 
     /**
@@ -378,7 +347,7 @@ public class CARTTool {
      * @param blankNum
      *            行空格符，用于显示树型结构
      */
-    private void showDecisionTree(AttrNode node, int blankNum) {
+    private void showDecisionTree(TreeNode node, int blankNum) {
         System.out.println();
         for (int i = 0; i < blankNum; i++) {
             System.out.print("    ");
@@ -407,7 +376,7 @@ public class CARTTool {
             System.out.print("【" + node.getNodeIndex() + ":"
                     + node.getAttrName() + "】");
             if (node.getChildAttrNode() != null) {
-                for (AttrNode childNode : node.getChildAttrNode()) {
+                for (TreeNode childNode : node.getChildAttrNode()) {
                     showDecisionTree(childNode, 2 * blankNum);
                 }
             } else {
@@ -426,12 +395,12 @@ public class CARTTool {
      * @param ifCutNode
      *            是否需要剪枝
      */
-    private void setIndexAndAlpah(AttrNode node, int index, boolean ifCutNode) {
-        AttrNode tempNode;
+    private void setIndexAndAlpah(TreeNode node, int index, boolean ifCutNode) {
+        TreeNode tempNode;
         // 最小误差代价节点，即将被剪枝的节点
-        AttrNode minAlphaNode = null;
+        TreeNode minAlphaNode = null;
         double minAlpah = Integer.MAX_VALUE;
-        Queue<AttrNode> nodeQueue = new LinkedList<AttrNode>();
+        Queue<TreeNode> nodeQueue = new LinkedList<TreeNode>();
 
         nodeQueue.add(node);
         while (nodeQueue.size() > 0) {
@@ -440,7 +409,7 @@ public class CARTTool {
             tempNode = nodeQueue.poll();
             tempNode.setNodeIndex(index);
             if (tempNode.getChildAttrNode() != null) {
-                for (AttrNode childNode : tempNode.getChildAttrNode()) {
+                for (TreeNode childNode : tempNode.getChildAttrNode()) {
                     nodeQueue.add(childNode);
                 }
                 computeAlpha(tempNode);
@@ -468,7 +437,7 @@ public class CARTTool {
      * @param node
      *            待计算的非叶子节点
      */
-    private void computeAlpha(AttrNode node) {
+    private void computeAlpha(TreeNode node) {
         double rt = 0;
         double Rt = 0;
         double alpha = 0;
@@ -478,19 +447,18 @@ public class CARTTool {
         int minNum = 0;
 
         ArrayList<String> dataIndex;
-        ArrayList<AttrNode> leafNodes = new ArrayList<>();
+        ArrayList<TreeNode> leafNodes = new ArrayList<>();
 
         addLeafNode(node, leafNodes);
         node.setLeafNum(leafNodes.size());
-        for (AttrNode attrNode : leafNodes) {
+        for (TreeNode attrNode : leafNodes) {
             dataIndex = attrNode.getDataIndex();
 
             int num = 0;
             sumNum += dataIndex.size();
             for (String s : dataIndex) {
                 // 统计分类数据中的正负实例数
-//                if (data[Integer.parseInt(s)][attrNames.length - 1].equals(YES)) {
-                if (data[Integer.parseInt(s)][attrNames.length-1].equals("YES")) {
+                if (data[Integer.parseInt(s)][attrNames.length - 1].equals(YES)) {
                     num++;
                 }
             }
@@ -522,11 +490,11 @@ public class CARTTool {
      * @param leafNode
      *            叶子节点列表容器
      */
-    private void addLeafNode(AttrNode node, ArrayList<AttrNode> leafNode) {
+    private void addLeafNode(TreeNode node, ArrayList<TreeNode> leafNode) {
         ArrayList<String> dataIndex;
 
         if (node.getChildAttrNode() != null) {
-            for (AttrNode childNode : node.getChildAttrNode()) {
+            for (TreeNode childNode : node.getChildAttrNode()) {
                 dataIndex = childNode.getDataIndex();
                 if (dataIndex != null && dataIndex.size() > 0) {
                     // 说明此节点为叶子节点
