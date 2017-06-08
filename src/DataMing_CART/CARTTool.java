@@ -96,20 +96,8 @@ public class CARTTool {
          */
     }
 
-    /**
-     * 计算机基尼指数
-     *
-     * @param remainData
-     *            剩余数据
-     * @param attrName
-     *            属性名称
-     * @param value
-     *            属性值
-     * @param beLongValue
-     *            分类是否属于此属性值
-     * @return
-     */
-    public double computeGini(String[][] remainData, String attrName,
+
+        public double computeGini(String[][] remainData, String attrName,
                               String value, boolean beLongValue) {
         // 实例总数
         int total = 0;

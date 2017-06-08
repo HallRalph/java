@@ -1,20 +1,37 @@
 package GUI;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * datou on 2017/6/6.
  */
 public class Bank {
-    public static void main(String[] args) {
-        Frame f = new Frame("My Frame with Panel");
-        Panel p = new Panel(null);
-        f.setLayout(null);
-        f.setBounds(300,300,500,500);
-        f.setBackground(new Color(0,0,102));
-        p.setBounds(50,50,400,400);
-        p.setBackground(new Color(204,204,255));
-        f.add(p);
+    private Frame f;
+    private Button btn;
+    private JRadioButton radioButton1;
+
+    Bank(){}
+
+    public void init(){
+        f = new Frame("ATM");
+        f.setSize(500,400);
+        f.setLocation(300,200);
+        f.setLayout(new FlowLayout());
+        btn = new Button("abc");
+
+        f.add(btn);
         f.setVisible(true);
     }
+
+    public void myEvent(){
+        f.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                System.exit(0);
+            }
+        });
+    }
+
 }
