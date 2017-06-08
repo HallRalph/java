@@ -11,17 +11,17 @@ public class Test
     }
 
     private static void test2(){
-        Person p1 = new Person();
-        p1.setName("123");
-        p1.setAge(21);
-        p1.setSex('男');
-        //p1.showInfo();
-        System.out.println(p1.getName()+"是"+(2017-p1.getAge())+"年出生");
-    }
-
-    private static void test3(){
-        Person p1 = new Person();
-
+//        Person p1 = new Person();
+//        p1.setName("123");
+//        p1.setAge(21);
+//        p1.setSex('男');
+//        //p1.showInfo();
+//        System.out.println(p1.getName()+"是"+(2017-p1.getAge())+"年出生");
+//    }
+//
+//    private static void test3(){
+//        Person p1 = new Person();
+//
 
     }
 }

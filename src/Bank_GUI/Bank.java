@@ -1,6 +1,7 @@
 package Bank_GUI;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,14 +11,20 @@ import java.awt.event.ActionListener;
 public class Bank {
     public static void main(String[] args) {
         JFrame frame = new JFrame("ATM");
+        frame.setLayout(null);
         frame.setSize(350,200);
+        frame.setLocation(220,100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
+        //panel.setLayout(null);
         frame.add(panel);
 
-        JButton loginbtn = new JButton("login");
-        JButton signupbtn = new JButton("signup");
+        JButton loginbtn = new JButton("µÇÂ¼");
+        JButton signupbtn = new JButton("¿ª»§");
+
+        //loginbtn.setLocation(220,10);
+        //signupbtn.setLocation(220,40);
 
         panel.add(loginbtn);
         panel.add(signupbtn);
@@ -36,7 +43,9 @@ public class Bank {
     private static void loginFrame(){
         JFrame loginF = new JFrame("Login");
         loginF.setSize(350,200);
-        loginF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginF.setLocation(220,100);
+
+        loginF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel loginP = new JPanel();
         loginP.setLayout(null);
@@ -78,13 +87,14 @@ public class Bank {
 
     private static void check(String username, String pwd){
         JFrame afterLoginF = new JFrame("ATM");
+        afterLoginF.setLayout(null);
         afterLoginF.setSize(600,250);
-        //afterLoginF.setDefaultCloseOperation(afterLoginF.EXIT_ON_CLOSE);
         afterLoginF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         JPanel afterLoginP = new JPanel();
-        JLabel a = new JLabel(username);
-        afterLoginF.add(afterLoginP);
-        afterLoginP.add(a);
+
+        JButton chaxun=new JButton("²éÑ¯");
+
 
         afterLoginF.setVisible(true);
     }
