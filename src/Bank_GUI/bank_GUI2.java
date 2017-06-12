@@ -13,23 +13,23 @@ import java.sql.Statement;
 /**
  * Created by dt112 on 2017/6/9.
  */
-public class bank_GUI{
-    //?????
-    private static String url = "jdbc:mysql://localhost:3306/test";//??????????url??test????????????????????????
-    private static String user = "root";//mysql?????
-    private static String pass = "123456";//mysql???????
+public class bank_GUI2{
+    //数据库
+    private static String url = "jdbc:mysql://localhost:3306/test";//连接数据库的url，test是我自己的一个数据库啊宝宝们。
+    private static String user = "root";//mysql登录名
+    private static String pass = "123456";//mysql登录密码
     private static Connection con;//
 
 
     private static JFrame f = new JFrame("ATM");
-    private static JPanel p = new JPanel();
+    private static JPanel p = new JPanel(null);
     private static JPanel p1 = new JPanel();
     private static JPanel p2 = new JPanel();
     private static JPanel p3 = new JPanel();
-    private static JPanel p4 = new JPanel();
-    private static JPanel p5 = new JPanel();
-    private static JPanel lp = new JPanel();
-    private static JPanel zcp = new JPanel();
+    private static JPanel p4 = new JPanel(null);
+    private static JPanel p5 = new JPanel(null);
+    private static JPanel lp = new JPanel(null);
+    private static JPanel zcp = new JPanel(null);
 
     private static int card_id;
     private static String sex;
@@ -72,21 +72,25 @@ public class bank_GUI{
 
         f.setSize(500, 535);
         f.setLocation(710, 290);
-        //f.setResizable(false);
+        f.setResizable(false);
 
-        JButton denglu = new JButton("???");
-        JButton kaihu = new JButton("????");
+        JButton denglu = new JButton("登录");
+        JButton kaihu = new JButton("开户");
+
+        denglu.setBounds(113,150,80,25);
+        kaihu.setBounds(306,150,80,25);
+
         p.add(denglu);
         p.add(kaihu);
 
-        //?????????
+        //点击登录按钮
         denglu.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showloginp();
             }
         });
-        //????
+        //开户
         kaihu.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,99 +109,99 @@ public class bank_GUI{
         f.add(p);
     }
 
-    //???Panel
+    //注册Panel
     private static void zhuce() {
-        //JLabel l1 = new JLabel("?????");
-        //JTextField t1 = new JTextField(20);
-        JLabel l2 = new JLabel("???");
-        JRadioButton male = new JRadioButton("??");
-        JRadioButton female = new JRadioButton("?");
+        JLabel l2 = new JLabel("性别：");
+        l2.setBounds(50,30,80,25);
+
+        JRadioButton male = new JRadioButton("男");
+        JRadioButton female = new JRadioButton("女");
         ButtonGroup bg = new ButtonGroup();
         bg.add(male);
         bg.add(female);
-//        male.setSelected(true);
-        JLabel l3 = new JLabel("??????");
-        JTextField t3 = new JTextField(20);
-        JLabel l4 = new JLabel("????");
-        JPasswordField t4 = new JPasswordField(20);
-        JLabel l0 = new JLabel("???????");
-        JPasswordField t0 = new JPasswordField(20);
-        JLabel l5 = new JLabel("ID??");
-        JTextField t5 = new JTextField(20);
-        JLabel l6 = new JLabel("???????");
-        JRadioButton s = new JRadioButton("????");
-        JRadioButton c = new JRadioButton("?????");
-        JLabel l7 = new JLabel("??????");
-        JTextField t7 = new JTextField(20);
-        JLabel l8 = new JLabel("??????");
-        JTextField t8 = new JTextField(20);
-        JButton b = new JButton("???");
-        JButton b2 = new JButton("????");
+        male.setBounds(150,30,50,25);
+        female.setBounds(220,30,50,25);
+        JLabel l3 = new JLabel("姓名：");
+        l3.setBounds(50,60,80,25);
 
-        //zcp.add(l1);
-//        zcp.add(t1);
-        zcp.add(l2);
-        zcp.add(male);
-        zcp.add(female);
-        zcp.add(l3);
-        zcp.add(t3);
-        zcp.add(l4);
-        zcp.add(t4);
-        zcp.add(l0);
-        zcp.add(t0);
-        zcp.add(l5);
-        zcp.add(t5);
-        zcp.add(l6);
-        zcp.add(s);
-        zcp.add(c);
-        zcp.add(l7);
-        zcp.add(t7);
-        zcp.add(l8);
-        zcp.add(t8);
-        zcp.add(b);
-        zcp.add(b2);
-        zcp.setVisible(false);
+        JTextField t3 = new JTextField(20);
+        t3.setBounds(150,60,150,25);
+
+        JLabel l4 = new JLabel("密码：");
+        l4.setBounds(50,90,80,25);
+        JPasswordField t4 = new JPasswordField(20);
+        t4.setBounds(150,90,150,25);
+
+        JLabel l0 = new JLabel("确认密码：");
+        l0.setBounds(50,120,150,25);
+
+        JPasswordField t0 = new JPasswordField(20);
+        t0.setBounds(150,120,150,25);
+
+        JLabel l5 = new JLabel("ID：");
+        l5.setBounds(50,150,50,25);
+
+        JTextField t5 = new JTextField(20);
+        t5.setBounds(150,150,150,25);
+        JLabel l6 = new JLabel("卡类型：");
+        l6.setBounds(50,180,80,25);
+        JRadioButton s = new JRadioButton("借记卡");
+        JRadioButton c = new JRadioButton("信用卡");
+        ButtonGroup ct=new ButtonGroup();
+        ct.add(s);ct.add(c);
+        s.setBounds(150,180,70,25);
+        c.setBounds(230,180,80,25);
+        JLabel l7 = new JLabel("存入金额：");
+        l7.setBounds(50,210,150,25);
+        JTextField t7 = new JTextField(20);
+        t7.setBounds(150,210,150,25);
+        JLabel l8 = new JLabel("透支额度：");
+        l8.setBounds(50,240,150,25);
+        JTextField t8 = new JTextField(20);
+        t8.setBounds(150,240,150,25);
+        JButton b = new JButton("确认");
+        b.setBounds(50,270,80,25);
+        JButton b2 = new JButton("返回");
+        b2.setBounds(150,270,80,25);
+        zcp.add(l2);        zcp.add(male);        zcp.add(female);        zcp.add(l3);        zcp.add(t3);        zcp.add(l4);        zcp.add(t4);        zcp.add(l0);        zcp.add(t0);        zcp.add(l5);        zcp.add(t5);        zcp.add(l6);        zcp.add(s);        zcp.add(c);        zcp.add(l7);        zcp.add(t7);        zcp.add(l8);        zcp.add(t8);        zcp.add(b);        zcp.add(b2);        zcp.setVisible(false);
 
         b.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //int card_id= Integer.parseInt(t1.getText());
-                if(!male.isSelected()||!female.isSelected()||t3.getText().equals("")||t4.getPassword().equals("")||t0.getPassword().equals("")||t5.getText().equals("")||!s.isSelected()||!c.isSelected()||t7.getText().equals("")||t8.getText().equals("")){
-                    JOptionPane.showMessageDialog(null, "???????", "WARNING", JOptionPane.WARNING_MESSAGE);
-                }else {
-                    String sex=male.isSelected()?"??":"?";
-                    String name=t3.getText();
-                    String pwd= String.valueOf(t4.getPassword());
-                    String pwd2=String.valueOf(t0.getPassword());
-                    int id= Integer.parseInt(t5.getText());
-                    int card_type= Integer.parseInt(s.isSelected()?"0":"1");
-                    float balance= Float.parseFloat(t7.getText());
-                    float overdraw= Float.parseFloat(t8.getText());
 
 
-
-                    String sql="insert into account(sex,name,password,id,card_type,balance,overdraw) values(?,?,?,?,?,?,?)";
+                //JOptionPane.showMessageDialog(null,"信息错误！","失败",JOptionPane.WARNING_MESSAGE);
+                if (t3.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "信息错误！", "失败", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    String a = String.valueOf(t0.getPassword());
+                    String sex = male.isSelected() ? "男" : "女";
+                    String name = t3.getText();
+                    String pwd = String.valueOf(t4.getPassword());
+                    String pwd2 = String.valueOf(t0.getPassword());
+                    int id = Integer.parseInt(t5.getText());
+                    int card_type = Integer.parseInt(s.isSelected() ? "0" : "1");
+                    float balance = Float.parseFloat(t7.getText());
+                    float overdraw = Float.parseFloat(t8.getText());
+                    String sql = "insert into account(sex,name,password,id,card_type,balance,overdraw) values(?,?,?,?,?,?,?)";
                     try {
-                        PreparedStatement ptmt=con.prepareStatement(sql);
+                        PreparedStatement ptmt = con.prepareStatement(sql);
                         //ptmt.setInt(1,card_id);
-                        ptmt.setString(1,sex);
-                        ptmt.setString(2,name);
-                        ptmt.setString(3,pwd);
-                        ptmt.setInt(4,id);
-                        ptmt.setInt(5,card_type);
-                        ptmt.setFloat(6,balance);
-                        ptmt.setFloat(7,overdraw);
+                        ptmt.setString(1, sex);
+                        ptmt.setString(2, name);
+                        ptmt.setString(3, pwd);
+                        ptmt.setInt(4, id);
+                        ptmt.setInt(5, card_type);
+                        ptmt.setFloat(6, balance);
+                        ptmt.setFloat(7, overdraw);
                         ptmt.execute();
-                        JOptionPane.showMessageDialog(null, "???????", "OK", JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "注册成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                         showloginp();
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
                 }
-                }
-
-
-
+            }
         });
         b2.addActionListener(new AbstractAction() {
             @Override
@@ -218,8 +222,16 @@ public class bank_GUI{
         JTextField card_idT = new JTextField(20);
         JLabel pwdL = new JLabel("password:");
         JPasswordField pwdT = new JPasswordField(20);
-        JButton queren = new JButton("???");
-        JButton back = new JButton("????");
+        JButton queren = new JButton("确认");
+        JButton back = new JButton("返回");
+
+        card_idL.setBounds(50,30,80,25);
+        card_idT.setBounds(145,30,120,25);
+        pwdL.setBounds(50,70,120,25);
+        pwdT.setBounds(145,70,120,25);
+
+        queren.setBounds(50,100,80,25);
+        back.setBounds(150,100,80,25);
         lp.add(card_idL);
         lp.add(card_idT);
         lp.add(pwdL);
@@ -256,7 +268,7 @@ public class bank_GUI{
         lp.setVisible(true);
     }
 
-    //???
+    //登录
     private static void check(int card_id2, String pwd2) throws SQLException {
         String sql = "select * from account where card_id=? and password=?";
         PreparedStatement ptmt = con.prepareStatement(sql);
@@ -265,7 +277,7 @@ public class bank_GUI{
         ResultSet rs = ptmt.executeQuery();
 
         if (rs.next()) {
-            JOptionPane.showMessageDialog(null, "????????", "OK", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "登录成功！", "OK", JOptionPane.PLAIN_MESSAGE);
             card_id = rs.getInt("card_id");
             sex = rs.getString("sex");
             name = rs.getString("name");
@@ -279,21 +291,21 @@ public class bank_GUI{
             );
             showmainp();
         } else {
-            JOptionPane.showMessageDialog(null, "???????", "WARNING", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "信息错误！", "WARNING", JOptionPane.WARNING_MESSAGE);
             showloginp();
         }
     }
 
     private static void mainP() {
-        JButton btn1 = new JButton("???");
-        JButton btn2 = new JButton("???");
-        JButton btn3 = new JButton("???");
-        JButton btn4 = new JButton("???");
-        JButton btn5 = new JButton("????");
-        JButton btn6 = new JButton("????");
-        JButton btn7 = new JButton("???");
-        JButton btn8 = new JButton("????");
-        //JButton btn5=new JButton("????");
+        JButton btn1 = new JButton("查询");
+        JButton btn2 = new JButton("存款");
+        JButton btn3 = new JButton("取款");
+        JButton btn4 = new JButton("转账");
+        JButton btn5 = new JButton("改密");
+        JButton btn6 = new JButton("销户");
+        JButton btn7 = new JButton("退卡");
+        JButton btn8 = new JButton("返回");
+        //JButton btn5=new JButton("返回");
 
         btn1.setBounds(113, 80, 80, 25);
         btn2.setBounds(306, 80, 80, 25);
@@ -378,7 +390,7 @@ public class bank_GUI{
     }
 
     static JLabel bl = new JLabel();
-    static JButton b = new JButton("????");
+    static JButton b = new JButton("返回");
 
     private static void chaxun() throws SQLException {
 
@@ -405,20 +417,20 @@ public class bank_GUI{
         ptmt.setInt(1, card_id);
         ResultSet rs = ptmt.executeQuery();
         if (rs.next()) {
-            System.out.println("???" + rs.getFloat("balance") + "?");
-            bl.setText("??????" + rs.getFloat("balance") + "?");
+            System.out.println("剩余" + rs.getFloat("balance") + "元");
+            bl.setText("当前余额" + rs.getFloat("balance") + "元");
         }
-        f.setTitle("???");
+        f.setTitle("查询");
         mainp.setVisible(false);
         p1.setVisible(true);
         f.add(p1);
     }
 
     private static void cunkuan() {
-        JLabel l = new JLabel("??????????:");
+        JLabel l = new JLabel("请输入存款金额:");
         JTextField t = new JTextField(20);
-        JButton b = new JButton("???");
-        JButton b2 = new JButton("????");
+        JButton b = new JButton("确认");
+        JButton b2 = new JButton("返回");
 
         b.addActionListener(new AbstractAction() {
             @Override
@@ -432,7 +444,7 @@ public class bank_GUI{
                     preStmt.setFloat(1, num);
                     preStmt.setInt(2, card_id);
                     preStmt.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "???????", "OK", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "存款成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                     showchaxun();
                     balance = num;
                     p2.setVisible(false);
@@ -457,7 +469,7 @@ public class bank_GUI{
     }
 
     private static void showcunkuan() {
-        f.setTitle("???");
+        f.setTitle("存款");
 
         mainp.setVisible(false);
         f.add(p2);
@@ -466,10 +478,10 @@ public class bank_GUI{
 
     private static void qukuan() {
         mainp.setVisible(false);
-        JLabel l = new JLabel("???????????:");
+        JLabel l = new JLabel("请输入取款金额:");
         JTextField t = new JTextField(20);
-        JButton b = new JButton("???");
-        JButton b2 = new JButton("????");
+        JButton b = new JButton("确认");
+        JButton b2 = new JButton("返回");
 
         p3.add(l);
         p3.add(t);
@@ -480,9 +492,9 @@ public class bank_GUI{
             public void actionPerformed(ActionEvent e) {
                 float num = Float.parseFloat(t.getText());
                 if (num != 0 && num > 0) {
-                    if (card_type == 0) {  //????
+                    if (card_type == 0) {  //储蓄卡
                         if (balance < num) {
-                            JOptionPane.showMessageDialog(null, "?????", "WARNING", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "余额不足！", "WARNING", JOptionPane.WARNING_MESSAGE);
                             t.setText("");
                         } else {
                             balance -= num;
@@ -492,15 +504,15 @@ public class bank_GUI{
                                 preStmt.setFloat(1, balance);
                                 preStmt.setInt(2, card_id);
                                 preStmt.executeUpdate();
-                                JOptionPane.showMessageDialog(null, "???????", "OK", JOptionPane.PLAIN_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "取款成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                                 t.setText("");
                             } catch (SQLException e1) {
                                 e1.printStackTrace();
                             }
                         }
-                    } else {  //?????
+                    } else {  //信用卡
                         if (balance - num < -overdraw) {
-                            JOptionPane.showMessageDialog(null, "??????", "WARNING", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "额度不足！", "WARNING", JOptionPane.WARNING_MESSAGE);
                             t.setText("");
                         } else {
                             balance -= num;
@@ -510,7 +522,7 @@ public class bank_GUI{
                                 preStmt.setFloat(1, balance);
                                 preStmt.setInt(2, card_id);
                                 preStmt.executeUpdate();
-                                JOptionPane.showMessageDialog(null, "???????", "OK", JOptionPane.PLAIN_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "取款成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                                 t.setText("");
 
                             } catch (SQLException e1) {
@@ -519,7 +531,7 @@ public class bank_GUI{
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "??????", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "金额错误！", "WARNING", JOptionPane.WARNING_MESSAGE);
                     t.setText("");
                 }
 
@@ -536,7 +548,7 @@ public class bank_GUI{
     }
 
     private static void showqukuan() {
-        f.setTitle("???");
+        f.setTitle("取款");
         mainp.setVisible(false);
         f.add(p3);
         p3.setVisible(true);
@@ -544,14 +556,22 @@ public class bank_GUI{
 
     private static void zhuanzhang() {
         mainp.setVisible(false);
-        JLabel card_idL = new JLabel("?????????????");
+        JLabel card_idL = new JLabel("请输入对方卡号：");
         JTextField card_idT = new JTextField(20);
-        JLabel l = new JLabel("???????????:");
+        JLabel l = new JLabel("请输入转账金额:");
         JTextField t = new JTextField(20);
-        JButton b = new JButton("???");
-        JButton b2 = new JButton("????");
+        JButton b = new JButton("确认");
+        JButton b2 = new JButton("返回");
 
-        //??????
+        card_idL.setBounds(80,30,120,25);
+        card_idT.setBounds(185,30,120,25);
+        l.setBounds(80,70,120,25);
+        t.setBounds(185,70,120,25);
+
+        b.setBounds(80,100,80,25);
+        b2.setBounds(180,100,80,25);
+
+        //确认转账
         b.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -559,7 +579,7 @@ public class bank_GUI{
                 int card_id2;
                 float num;
                 if (card_idT.getText().equals("") || t.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "???????", "???", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "信息错误！", "失败", JOptionPane.WARNING_MESSAGE);
 
                 } else {
                     card_id2 = Integer.parseInt(card_idT.getText());
@@ -572,7 +592,7 @@ public class bank_GUI{
                         if (rs.next()) {
                             if (card_id != card_id2) {
                                 if (num > balance && card_type == 0) {
-                                    JOptionPane.showMessageDialog(null, "?????", "???", JOptionPane.WARNING_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "余额不足！", "失败", JOptionPane.WARNING_MESSAGE);
                                     t.setText("");
                                 } else if (num < balance || num < overdraw + balance) {
                                     String sql2 = "update account set balance=? where card_id=?";
@@ -586,20 +606,20 @@ public class bank_GUI{
                                     preStmt4.setFloat(1, rs.getFloat("balance") + num);
                                     preStmt4.setInt(2, card_id2);
                                     preStmt4.executeUpdate();
-                                    JOptionPane.showMessageDialog(null, "???????", "OK", JOptionPane.PLAIN_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "转账成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                                     card_idT.setText("");
                                     t.setText("");
                                 } else {
-                                    JOptionPane.showMessageDialog(null, "?????", "???", JOptionPane.WARNING_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "余额不足！", "失败", JOptionPane.WARNING_MESSAGE);
                                     t.setText("");
                                 }
                             } else {
-                                JOptionPane.showMessageDialog(null, "?????????????", "???", JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "不能给本卡转账！", "失败", JOptionPane.WARNING_MESSAGE);
                                 card_idT.setText("");
                                 t.setText("");
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "?????????????", "???", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "对方卡号不存在！", "失败", JOptionPane.WARNING_MESSAGE);
                             card_idT.setText("");
                             t.setText("");
                         }
@@ -611,7 +631,7 @@ public class bank_GUI{
 
             }
         });
-        //????
+        //返回
         b2.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -628,23 +648,36 @@ public class bank_GUI{
     }
 
     private static void showzhuanzhang() {
-        f.setTitle("???");
+        f.setTitle("转账");
         mainp.setVisible(false);
         f.add(p4);
         p4.setVisible(true);
     }
 
     private static void gaimi() {
-        JLabel l1 = new JLabel("???????????");
+        JLabel l1 = new JLabel("请输入原密码：");
         JPasswordField p1 = new JPasswordField(20);
-        JLabel l2 = new JLabel("????????????:");
+        JLabel l2 = new JLabel("请输入新密码:");
         JPasswordField p2 = new JPasswordField(20);
-        JLabel l3 = new JLabel("???????????????:");
+        JLabel l3 = new JLabel("请再次输入新密码:");
         JPasswordField p3 = new JPasswordField(20);
-        JButton b = new JButton("???");
-        JButton b2 = new JButton("????");
+        JButton b = new JButton("确认");
+        JButton b2 = new JButton("返回");
 
-        //??????
+        l1.setBounds(80,30,120,25);
+        p1.setBounds(195,30,120,25);
+        l2.setBounds(80,70,120,25);
+        p2.setBounds(195,70,120,25);
+
+        l3.setBounds(80,110,120,25);
+        p3.setBounds(195,110,120,25);
+
+
+        b.setBounds(80,150,80,25);
+        b2.setBounds(180,150,80,25);
+
+
+        //确认改密
         b.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -669,12 +702,12 @@ public class bank_GUI{
                             preStmt.setInt(2, card_id);
                             preStmt.executeUpdate();
 
-                            JOptionPane.showMessageDialog(null, "????????", "OK", JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "改密成功！", "OK", JOptionPane.PLAIN_MESSAGE);
                             p1.setText("");
                             p2.setText("");
                             p3.setText("");
                         } else {
-                            JOptionPane.showMessageDialog(null, "???????", "???", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "信息错误！", "失败", JOptionPane.WARNING_MESSAGE);
                             p1.setText("");
                             p2.setText("");
                             p3.setText("");
@@ -685,7 +718,7 @@ public class bank_GUI{
                 }
             }
         });
-        //????
+        //返回
         b2.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -704,22 +737,22 @@ public class bank_GUI{
     }
 
     private static void showgaimi() {
-        f.setTitle("????");
+        f.setTitle("改密");
         mainp.setVisible(false);
         p5.setVisible(true);
         f.add(p5);
     }
 
 
-    //????
+    //销户
     private static void xiaohu() throws SQLException {
-        int exi = JOptionPane.showConfirmDialog(null, "?????????", "???", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int exi = JOptionPane.showConfirmDialog(null, "确认销户吗？", "提示", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (exi == JOptionPane.YES_OPTION) {
             String sql = "delete from account where card_id=?";
             PreparedStatement ptmt = con.prepareStatement(sql);
             ptmt.setInt(1, card_id);
             ptmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "?????????", "OK", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "销户成功！", "OK", JOptionPane.PLAIN_MESSAGE);
             mainp.setVisible(false);
             showp();
         } else {
