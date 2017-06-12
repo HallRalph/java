@@ -4,6 +4,7 @@ import com.mysql.jdbc.*;
 import com.sun.org.apache.regexp.internal.RE;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 import java.sql.Connection;
@@ -21,15 +22,15 @@ public class bank_GUI2{
     private static Connection con;//
 
 
-    private static JFrame f = new JFrame("ATM");
-    private static JPanel p = new JPanel(null);
-    private static JPanel p1 = new JPanel();
-    private static JPanel p2 = new JPanel();
-    private static JPanel p3 = new JPanel();
-    private static JPanel p4 = new JPanel(null);
-    private static JPanel p5 = new JPanel(null);
-    private static JPanel lp = new JPanel(null);
-    private static JPanel zcp = new JPanel(null);
+    private static JFrame f = new JFrame("ATM");    //  主窗体
+    private static JPanel p = new JPanel(null);   //  登录/开户
+    private static JPanel p1 = new JPanel();             //  查询
+    private static JPanel p2 = new JPanel();             //  存款
+    private static JPanel p3 = new JPanel();             //  取款
+    private static JPanel p4 = new JPanel(null);  //  转账
+    private static JPanel p5 = new JPanel(null);  //  改密
+    private static JPanel lp = new JPanel(null);  //  登录页面
+    private static JPanel zcp = new JPanel(null); //  注册页面
 
     private static int card_id;
     private static String sex;
@@ -58,6 +59,7 @@ public class bank_GUI2{
         gaimi();
         zhuce();
 
+        //显示选择登录/开户，隐藏其他Panel
         p.setVisible(true);
         p1.setVisible(false);
         p2.setVisible(false);
@@ -69,7 +71,6 @@ public class bank_GUI2{
     }
 
     public static void createFrame() {
-
         f.setSize(500, 535);
         f.setLocation(710, 290);
         f.setResizable(false);
@@ -83,10 +84,11 @@ public class bank_GUI2{
         p.add(denglu);
         p.add(kaihu);
 
-        //点击登录按钮
+        //登录
         denglu.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                f.setTitle("登录");
                 showloginp();
             }
         });
@@ -94,14 +96,20 @@ public class bank_GUI2{
         kaihu.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                f.setTitle("开户");
                 showzcp();
             }
         });
         f.add(p);
+
+
+
+
         f.setVisible(true);
     }
 
     private static void showp() {
+        f.setTitle("ATM");
         zcp.setVisible(false);
         lp.setVisible(false);
         p.setVisible(true);
@@ -168,10 +176,17 @@ public class bank_GUI2{
         b.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String s1=t3.getText();
+
+                String s2=new String(t4.getPassword());
+                String s3=new String(t0.getPassword());
+                String s4=t5.getText();
+                String s5=t7.getText();
+                String s6=t8.getText();
 
 
                 //JOptionPane.showMessageDialog(null,"信息错误！","失败",JOptionPane.WARNING_MESSAGE);
-                if (t3.getText().equals("")) {
+                if (bg.isSelected(null)||ct.isSelected(null)||s1.equals("")||s2.equals("")||!s2.equals(s3)||s4.equals("")||s5.equals("")||s6.equals("")) {
                     JOptionPane.showMessageDialog(null, "信息错误！", "失败", JOptionPane.WARNING_MESSAGE);
                 } else {
                     String a = String.valueOf(t0.getPassword());
@@ -196,7 +211,7 @@ public class bank_GUI2{
                         ptmt.setFloat(7, overdraw);
                         ptmt.execute();
                         JOptionPane.showMessageDialog(null, "注册成功！", "OK", JOptionPane.PLAIN_MESSAGE);
-                        showloginp();
+                        showloginp();       //转到登录界面
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
@@ -211,13 +226,13 @@ public class bank_GUI2{
         });
     }
 
-    private static void showzcp() {
+    private static void showzcp() {     //显示注册界面
         p.setVisible(false);
         f.add(zcp);
         zcp.setVisible(true);
     }
 
-    private static void loginPanel() {
+    private static void loginPanel() {      //登录界面
         JLabel card_idL = new JLabel("card_id:");
         JTextField card_idT = new JTextField(20);
         JLabel pwdL = new JLabel("password:");
@@ -244,7 +259,7 @@ public class bank_GUI2{
                 int card_id = Integer.parseInt(card_idT.getText());
                 String pwd = String.valueOf(pwdT.getPassword());
                 try {
-                    check(card_id, pwd);
+                    check(card_id, pwd);    //检查卡号和密码是否正确
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
@@ -261,7 +276,7 @@ public class bank_GUI2{
     }
 
     private static void showloginp() {
-        f.add(lp);
+        f.add(lp);  //添加登录界面
         p.setVisible(false);
         zcp.setVisible(false);
         mainp.setVisible(false);
@@ -286,17 +301,16 @@ public class bank_GUI2{
             card_type = rs.getInt("card_type");
             balance = rs.getFloat("balance");
             overdraw = rs.getFloat("overdraw");
-            System.out.println(
-                    card_id + "," + sex + "," + name + "," + pwd + "," + id + "," + card_type + "," + balance + "," + overdraw
-            );
-            showmainp();
+            showmainp();    //转到主界面
         } else {
             JOptionPane.showMessageDialog(null, "信息错误！", "WARNING", JOptionPane.WARNING_MESSAGE);
-            showloginp();
+            showloginp();   //回到登录界面
         }
     }
 
     private static void mainP() {
+
+        //主界面按钮
         JButton btn1 = new JButton("查询");
         JButton btn2 = new JButton("存款");
         JButton btn3 = new JButton("取款");
@@ -305,8 +319,8 @@ public class bank_GUI2{
         JButton btn6 = new JButton("销户");
         JButton btn7 = new JButton("退卡");
         JButton btn8 = new JButton("返回");
-        //JButton btn5=new JButton("返回");
 
+        //调整位置
         btn1.setBounds(113, 80, 80, 25);
         btn2.setBounds(306, 80, 80, 25);
         btn3.setBounds(113, 185, 80, 25);
@@ -316,6 +330,7 @@ public class bank_GUI2{
         btn7.setBounds(113, 395, 80, 25);
         btn8.setBounds(306, 395, 80, 25);
 
+        //添加按钮
         mainp.add(btn1);
         mainp.add(btn2);
         mainp.add(btn3);
@@ -325,6 +340,8 @@ public class bank_GUI2{
         mainp.add(btn7);
         mainp.add(btn8);
         mainp.setVisible(false);
+
+        //查询
         btn1.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -335,30 +352,40 @@ public class bank_GUI2{
                 }
             }
         });
+
+        //存款
         btn2.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showcunkuan();
             }
         });
+
+//        取款
         btn3.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showqukuan();
             }
         });
+
+        //转账
         btn4.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showzhuanzhang();
             }
         });
+
+        //改密
         btn5.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showgaimi();
             }
         });
+
+        //销户
         btn6.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -369,6 +396,8 @@ public class bank_GUI2{
                 }
             }
         });
+
+
         btn7.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -383,7 +412,9 @@ public class bank_GUI2{
         });
     }
 
+    //显示主界面选择功能
     private static void showmainp() {
+        f.setTitle("ATM");
         f.add(mainp);
         lp.setVisible(false);
         mainp.setVisible(true);
@@ -398,13 +429,11 @@ public class bank_GUI2{
             @Override
             public void actionPerformed(ActionEvent e) {
                 p1.setVisible(false);
-                mainp.setVisible(true);
+                showmainp();
                 p1.remove(bl);
                 f.setTitle("ATM");
             }
         });
-
-
         p1.setVisible(false);
     }
 
@@ -412,12 +441,13 @@ public class bank_GUI2{
         p1.add(bl);
         p1.add(b);
 
+        f.setTitle("查询");
+
         String sql = "select balance from account where card_id=?";
         PreparedStatement ptmt = con.prepareStatement(sql);
         ptmt.setInt(1, card_id);
         ResultSet rs = ptmt.executeQuery();
         if (rs.next()) {
-            System.out.println("剩余" + rs.getFloat("balance") + "元");
             bl.setText("当前余额" + rs.getFloat("balance") + "元");
         }
         f.setTitle("查询");
@@ -437,7 +467,6 @@ public class bank_GUI2{
             public void actionPerformed(ActionEvent e) {
                 float num = Float.parseFloat(t.getText());
                 num += balance;
-                System.out.println(num);
                 String sql = "update account set balance=? where card_id=?";
                 try {
                     PreparedStatement preStmt = con.prepareStatement(sql);
@@ -458,7 +487,7 @@ public class bank_GUI2{
             public void actionPerformed(ActionEvent e) {
                 t.setText("");
                 p2.setVisible(false);
-                mainp.setVisible(true);
+                showmainp();
             }
         });
         p2.add(l);
@@ -542,8 +571,7 @@ public class bank_GUI2{
             @Override
             public void actionPerformed(ActionEvent e) {
                 p3.setVisible(false);
-                mainp.setVisible(true);
-            }
+showmainp();            }
         });
     }
 
@@ -636,7 +664,7 @@ public class bank_GUI2{
             @Override
             public void actionPerformed(ActionEvent e) {
                 p4.setVisible(false);
-                mainp.setVisible(true);
+                showmainp();
             }
         });
         p4.add(card_idL);
@@ -687,9 +715,6 @@ public class bank_GUI2{
                     String pwd1 = String.valueOf(p1.getPassword());
                     String pwd2 = String.valueOf(p2.getPassword());
                     String pwd3 = String.valueOf(p3.getPassword());
-                    /*System.out.println(pwd1);
-                    System.out.println(pwd2);
-                    System.out.println(pwd3);*/
 
                     PreparedStatement ptmt = con.prepareStatement(sql);
                     ptmt.setInt(1, card_id);
@@ -723,7 +748,7 @@ public class bank_GUI2{
             @Override
             public void actionPerformed(ActionEvent e) {
                 p5.setVisible(false);
-                mainp.setVisible(true);
+                showmainp();
             }
         });
         p5.add(l1);
